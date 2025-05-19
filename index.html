@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>交互式剧情游戏</title>
+    <link rel="stylesheet" href="./css/style.css">
+</head>
+<body>
+    <div class="game-container">
+        <h1 class="game-title">交互式剧情游戏</h1>
+        
+        <div class="video-notice" id="video-notice">
+            <p>请准备视频文件并放入videos文件夹，或者点击下方按钮使用占位图像进行测试</p>
+            <button id="use-placeholder" class="control-button">使用占位图像测试</button>
+        </div>
+        
+        <div class="video-container">
+            <video id="story-video" controls>
+                <source src="" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
+        </div>
+        
+        <div id="choices-container" class="choices-container hidden">
+            <h2 class="choice-prompt">请做出你的选择：</h2>
+            <div class="choices-buttons" id="choices-buttons">
+                <!-- 选项按钮将通过JavaScript动态添加 -->
+            </div>
+        </div>
+
+        <div class="game-controls">
+            <button id="start-game" class="control-button">开始游戏</button>
+            <button id="restart-game" class="control-button hidden">重新开始</button>
+        </div>
+    </div>
+
+    <script src="./js/game.js"></script>
+</body>
+</html>

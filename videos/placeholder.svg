@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="640" height="360" viewBox="0 0 640 360">
+  <rect width="640" height="360" fill="#1e1e1e"/>
+  <text x="320" y="180" font-family="Arial" font-size="24" fill="#ffffff" text-anchor="middle" dominant-baseline="middle">视频占位符</text>
+  <text x="320" y="220" font-family="Arial" font-size="16" fill="#64ffda" text-anchor="middle" dominant-baseline="middle">请替换为实际视频文件</text>
+</svg>
