@@ -72,7 +72,7 @@ const choicesButtons = document.getElementById('choices-buttons');
 const startButton = document.getElementById('start-game');
 const restartButton = document.getElementById('restart-game');
 const videoNotice = document.getElementById('video-notice');
-const usePlaceholderButton = document.getElementById('use-placeholder');
+const videoContainer = document.getElementById('video-container');
 
 // 初始化游戏
 function initGame() {
@@ -81,32 +81,28 @@ function initGame() {
     restartButton.addEventListener('click', restartGame);
     videoElement.addEventListener('timeupdate', checkVideoProgress);
     videoElement.addEventListener('ended', handleVideoEnd);
-    usePlaceholderButton.addEventListener('click', usePlaceholder);
 }
 
-// 使用占位图像作为视频
-function usePlaceholder() {
-    // 修改游戏场景数据，使用SVG占位图像
-    Object.keys(gameScenes).forEach(sceneKey => {
-        gameScenes[sceneKey].videoSrc = './videos/placeholder.svg';
-        // 设置较短的选择时间，方便测试
-        if (gameScenes[sceneKey].choiceTime > 0) {
-            gameScenes[sceneKey].choiceTime = 3;
-        }
-    });
-    
-    // 隐藏提示信息
-    videoNotice.classList.add('hidden');
-    
-    // 提示用户已启用测试模式
-    alert('已启用测试模式，使用占位图像代替视频。');
-}
+
 
 // 开始游戏
 function startGame() {
     startButton.classList.add('hidden');
     // 隐藏视频提示区域
     videoNotice.classList.add('hidden');
+    // 显示视频容器
+    document.getElementById('video-container').classList.remove('hidden');
+    // 进入全屏模式
+    const videoContainer = document.getElementById('video-container');
+    if (videoContainer.requestFullscreen) {
+        videoContainer.requestFullscreen().catch(err => {
+            console.warn('无法进入全屏模式:', err);
+        });
+    } else if (videoContainer.webkitRequestFullscreen) { // Safari
+        videoContainer.webkitRequestFullscreen();
+    } else if (videoContainer.msRequestFullscreen) { // IE11
+        videoContainer.msRequestFullscreen();
+    }
     loadScene('intro');
     gameState.isPlaying = true;
 }
@@ -116,12 +112,33 @@ function restartGame() {
     restartButton.classList.add('hidden');
     startButton.classList.remove('hidden');
     choicesContainer.classList.add('hidden');
+    // 移除结局场景样式类
+    choicesContainer.classList.remove('ending-scene');
     gameState.history = [];
     gameState.currentScene = null;
     gameState.isPlaying = false;
     videoElement.pause();
     videoElement.removeAttribute('src');
     videoElement.load();
+    
+    // 退出全屏模式
+    if (document.exitFullscreen) {
+        document.exitFullscreen().catch(err => {
+            console.warn('退出全屏模式失败:', err);
+        });
+    } else if (document.webkitExitFullscreen) { // Safari
+        document.webkitExitFullscreen();
+    } else if (document.msExitFullscreen) { // IE11
+        document.msExitFullscreen();
+    }
+    
+    // 隐藏视频容器
+    document.getElementById('video-container').classList.add('hidden');
+    
+    // 确保重启按钮回到原始位置
+    if (restartButton.parentElement !== document.querySelector('.game-controls')) {
+        document.querySelector('.game-controls').appendChild(restartButton);
+    }
 }
 
 // 加载场景
@@ -141,21 +158,11 @@ function loadScene(sceneId) {
     // 加载视频
     videoElement.src = scene.videoSrc;
     videoElement.load();
+    // 移除控制条，实现纯净的视频播放体验
+    videoElement.removeAttribute('controls');
+    videoElement.style.objectFit = 'cover';
     
-    // 检查是否是SVG占位图像
-    if (scene.videoSrc.endsWith('.svg')) {
-        // 对于SVG占位图像，模拟视频播放
-        videoElement.onloadeddata = function() {
-            // 隐藏提示信息
-            videoNotice.classList.add('hidden');
-            // 如果是结局场景，直接显示结局
-            if (scene.isEnding) {
-                setTimeout(() => {
-                    handleVideoEnd();
-                }, 3000); // 3秒后显示结局
-            }
-        };
-    }
+
     
     videoElement.play().catch(error => {
         console.error('视频播放失败:', error);
@@ -165,6 +172,13 @@ function loadScene(sceneId) {
     // 如果是结局场景，显示重新开始按钮
     if (scene.isEnding) {
         restartButton.classList.remove('hidden');
+        // 确保重启按钮在全屏模式下显示在视频上方
+        videoContainer.appendChild(restartButton);
+    } else {
+        // 如果不是结局场景，确保重启按钮回到原位置
+        if (restartButton.parentElement === videoContainer) {
+            document.querySelector('.game-controls').appendChild(restartButton);
+        }
     }
 }
 
@@ -181,11 +195,7 @@ function checkVideoProgress() {
         showChoices(scene.choices);
     }
     
-    // 对于SVG占位图像，在短暂延迟后自动显示选项
-    if (scene.videoSrc.endsWith('.svg') && currentTime >= 2 && !scene.isEnding && choicesContainer.classList.contains('hidden')) {
-        videoElement.pause();
-        showChoices(scene.choices);
-    }
+
 }
 
 // 处理视频结束事件
@@ -236,10 +246,14 @@ function showEnding(endingTitle) {
     // 添加到选项容器中
     choicesButtons.innerHTML = '';
     choicesButtons.appendChild(endingElement);
-    choicesContainer.classList.remove('hidden');
     
-    // 显示重新开始按钮
+    // 添加重新开始按钮到结局标题下方
+    choicesButtons.appendChild(restartButton);
     restartButton.classList.remove('hidden');
+    
+    // 添加结局场景样式类，使容器居中显示
+    choicesContainer.classList.add('ending-scene');
+    choicesContainer.classList.remove('hidden');
 }
 
 // 当页面加载完成后初始化游戏

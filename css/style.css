@@ -53,19 +53,46 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
 }
 
+/* 全屏视频容器 */
+.fullscreen-video-container {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    background-color: #000;
+}
+
 #story-video {
     width: 100%;
-    max-height: 500px;
+    height: 100%;
+    object-fit: cover;
     background-color: #000;
 }
 
 /* 选择容器 */
 .choices-container {
-    margin: 20px 0;
+    position: absolute;
+    bottom: 50px;
+    left: 0;
+    right: 0;
+    margin: 0 auto;
+    width: 80%;
+    max-width: 800px;
     padding: 15px;
-    background-color: rgba(0, 0, 0, 0.3);
+    background-color: rgba(0, 0, 0, 0.7);
     border-radius: 8px;
     transition: all 0.3s ease;
+    z-index: 1001;
+}
+
+/* 结局场景的选项容器居中显示 */
+.choices-container.ending-scene {
+    top: 50%;
+    bottom: auto;
+    transform: translateY(-50%);
+    text-align: center;
 }
 
 .choice-prompt {
@@ -101,6 +128,17 @@ body {
 /* 游戏控制按钮 */
 .game-controls {
     margin-top: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+}
+
+/* 全屏模式下的重启按钮 */
+#restart-game {
+    position: relative;
+    margin-top: 20px;
+    z-index: 1002;
+    display: inline-block;
 }
 
 .control-button {
@@ -120,9 +158,24 @@ body {
     transform: scale(1.05);
 }
 
+/* 结局标题样式 */
+.ending-title {
+    font-size: 2.5rem;
+    color: #e91e63;
+    text-shadow: 0 0 10px rgba(233, 30, 99, 0.8);
+    margin: 20px 0;
+    animation: fadeIn 1s ease-in-out;
+    text-align: center;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
 /* 工具类 */
 .hidden {
-    display: none;
+    display: none !important;
 }
 
 /* 响应式设计 */
