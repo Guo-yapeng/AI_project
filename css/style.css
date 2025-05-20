@@ -71,6 +71,60 @@ body {
     background-color: #000;
 }
 
+/* 图片容器 */
+.image-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 80%;
+    max-width: 800px;
+    padding: 20px;
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    z-index: 1002;
+    text-align: center;
+}
+
+.image-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+}
+
+.image-title {
+    color: #64ffda;
+    font-size: 1.8rem;
+    margin-bottom: 10px;
+    text-shadow: 0 0 5px rgba(100, 255, 218, 0.5);
+}
+
+.story-image {
+    max-width: 100%;
+    max-height: 60vh;
+    border-radius: 5px;
+    box-shadow: 0 0 15px rgba(255, 255, 255, 0.2);
+}
+
+.image-continue-button {
+    padding: 10px 25px;
+    margin-top: 15px;
+    background-color: #64ffda;
+    color: #121212;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.image-continue-button:hover {
+    background-color: #9effeb;
+    transform: scale(1.05);
+}
+
 /* 选择容器 */
 .choices-container {
     position: absolute;

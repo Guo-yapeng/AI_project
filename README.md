@@ -22,6 +22,14 @@
      - gather_info.mp4（收集信息结局）
      - make_plan.mp4（制定计划结局）
 
+2. 准备图片文件
+   - 在项目根目录的 `images` 文件夹中准备以下图片：
+     - intro_image1.jpg 和 intro_image2.jpg（介绍场景图片）
+     - brave_path_image1.jpg 和 brave_path_image2.jpg（勇敢路径图片）
+     - cautious_path_image1.jpg 和 cautious_path_image2.jpg（谨慎路径图片）
+     - explore_alone_image.jpg、seek_help_image.jpg、gather_info_image.jpg 和 make_plan_image.jpg（结局图片）
+   - 详细说明请查看 `images/README.md` 文件
+
 2. 启动游戏
    - 直接在浏览器中打开 `index.html` 文件
    - 点击"开始游戏"按钮开始体验
@@ -35,6 +43,11 @@ const gameScenes = {
     'scene_id': {
         videoSrc: './videos/your_video.mp4',  // 视频路径
         choiceTime: 30,  // 视频播放到多少秒时显示选项
+        // 图片显示配置
+        images: [
+            { time: 10, src: './images/your_image.jpg', duration: 5, title: '图片标题' },
+            // 更多图片...
+        ],
         choices: [
             { text: '选项文本', nextScene: '下一个场景ID' },
             // 更多选项...
@@ -42,6 +55,13 @@ const gameScenes = {
     },
     // 更多场景...
 };
+```
+
+图片配置说明：
+- `time`: 视频播放到多少秒时显示图片
+- `src`: 图片文件路径
+- `duration`: 图片显示持续时间（秒），设为0则需手动点击继续
+- `title`: 图片标题，显示在图片上方
 ```
 
 ## 技术栈
