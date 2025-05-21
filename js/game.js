@@ -18,8 +18,20 @@ const gameScenes = {
         choiceTime: 30,  // 视频播放到多少秒时显示选项
         // 图片显示配置，可以设置多个时间点显示不同图片
         images: [
-            { time: 10, src: './images/intro_image1.jpg', duration: 5, title: '重要线索' },
-            { time: 20, src: './images/intro_image2.jpg', duration: 5, title: '神秘地图' }
+            { 
+                time: 10, 
+                src: './images/intro_image1.jpg', 
+                audioSrc: './audio/intro_image1.mp3', // 对应的音频文件
+                duration: 5, 
+                title: '重要线索' 
+            },
+            { 
+                time: 20, 
+                src: './images/intro_image2.jpg', 
+                audioSrc: './audio/intro_image2.mp3', // 对应的音频文件
+                duration: 5, 
+                title: '神秘地图' 
+            }
         ],
         choices: [
             { text: '选择勇敢前进', nextScene: 'brave_path' },
@@ -31,8 +43,20 @@ const gameScenes = {
         videoSrc: './videos/brave_path.mp4',
         choiceTime: 25,
         images: [
-            { time: 8, src: './images/brave_path_image1.jpg', duration: 4, title: '危险前方' },
-            { time: 15, src: './images/brave_path_image2.jpg', duration: 5, title: '神秘洞穴' }
+            { 
+                time: 8, 
+                src: './images/brave_path_image1.jpg', 
+                audioSrc: './audio/brave_path_image1.mp3', 
+                duration: 4, 
+                title: '危险前方' 
+            },
+            { 
+                time: 15, 
+                src: './images/brave_path_image2.jpg', 
+                audioSrc: './audio/brave_path_image2.mp3', 
+                duration: 5, 
+                title: '神秘洞穴' 
+            }
         ],
         choices: [
             { text: '独自探索', nextScene: 'explore_alone' },
@@ -44,8 +68,20 @@ const gameScenes = {
         videoSrc: './videos/cautious_path.mp4',
         choiceTime: 20,
         images: [
-            { time: 5, src: './images/cautious_path_image1.jpg', duration: 4, title: '隐藏线索' },
-            { time: 12, src: './images/cautious_path_image2.jpg', duration: 5, title: '地图标记' }
+            { 
+                time: 5, 
+                src: './images/cautious_path_image1.jpg', 
+                audioSrc: './audio/cautious_path_image1.mp3', 
+                duration: 4, 
+                title: '隐藏线索' 
+            },
+            { 
+                time: 12, 
+                src: './images/cautious_path_image2.jpg', 
+                audioSrc: './audio/cautious_path_image2.mp3', 
+                duration: 5, 
+                title: '地图标记' 
+            }
         ],
         choices: [
             { text: '收集更多信息', nextScene: 'gather_info' },
@@ -59,7 +95,13 @@ const gameScenes = {
         isEnding: true,
         endingTitle: '独行侠结局',
         images: [
-            { time: 10, src: './images/explore_alone_image.jpg', duration: 6, title: '独自探索的发现' }
+            { 
+                time: 10, 
+                src: './images/explore_alone_image.jpg', 
+                audioSrc: './audio/explore_alone_image.mp3', 
+                duration: 6, 
+                title: '独自探索的发现' 
+            }
         ]
     },
     'seek_help': {
@@ -68,7 +110,13 @@ const gameScenes = {
         isEnding: true,
         endingTitle: '团队合作结局',
         images: [
-            { time: 8, src: './images/seek_help_image.jpg', duration: 6, title: '团队的力量' }
+            { 
+                time: 8, 
+                src: './images/seek_help_image.jpg', 
+                audioSrc: './audio/seek_help_image.mp3', 
+                duration: 6, 
+                title: '团队的力量' 
+            }
         ]
     },
     'gather_info': {
@@ -77,7 +125,13 @@ const gameScenes = {
         isEnding: true,
         endingTitle: '信息收集者结局',
         images: [
-            { time: 7, src: './images/gather_info_image.jpg', duration: 6, title: '关键情报' }
+            { 
+                time: 7, 
+                src: './images/gather_info_image.jpg', 
+                audioSrc: './audio/gather_info_image.mp3', 
+                duration: 6, 
+                title: '关键情报' 
+            }
         ]
     },
     'make_plan': {
@@ -86,7 +140,13 @@ const gameScenes = {
         isEnding: true,
         endingTitle: '策略大师结局',
         images: [
-            { time: 9, src: './images/make_plan_image.jpg', duration: 6, title: '完美计划' }
+            { 
+                time: 9, 
+                src: './images/make_plan_image.jpg', 
+                audioSrc: './audio/make_plan_image.mp3', 
+                duration: 6, 
+                title: '完美计划' 
+            }
         ]
     }
 };
@@ -103,6 +163,9 @@ const imageContainer = document.getElementById('image-container');
 const imageElement = document.getElementById('story-image');
 const imageTitle = document.getElementById('image-title');
 const imageContinueButton = document.getElementById('image-continue-button');
+const audioElement = document.getElementById('story-audio');
+const audioToggleButton = document.getElementById('audio-toggle');
+const audioVolumeSlider = document.getElementById('audio-volume');
 
 // 初始化游戏
 function initGame() {
@@ -152,6 +215,13 @@ function restartGame() {
     videoElement.pause();
     videoElement.removeAttribute('src');
     videoElement.load();
+    
+    // 停止音频播放
+    if (audioElement.src) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+        audioElement.removeAttribute('src');
+    }
     
     // 退出全屏模式
     if (document.exitFullscreen) {
@@ -314,6 +384,23 @@ function showImage(image) {
     imageElement.src = image.src;
     imageTitle.textContent = image.title || '';
     
+    // 设置音频源（如果有）
+    if (image.audioSrc) {
+        audioElement.src = image.audioSrc;
+        audioElement.load();
+        audioElement.volume = audioVolumeSlider.value;
+        audioElement.play().catch(error => {
+            console.warn('音频播放失败:', error);
+        });
+        
+        // 显示音频控制
+        document.querySelector('.audio-controls').style.display = 'flex';
+        audioToggleButton.textContent = '暂停音频';
+    } else {
+        // 隐藏音频控制
+        document.querySelector('.audio-controls').style.display = 'none';
+    }
+    
     // 显示图片容器
     imageContainer.classList.remove('hidden');
     
@@ -329,6 +416,13 @@ function showImage(image) {
 function hideImage() {
     imageContainer.classList.add('hidden');
     gameState.currentImage = null;
+    
+    // 停止音频播放
+    if (audioElement.src) {
+        audioElement.pause();
+        audioElement.currentTime = 0;
+    }
+    
     videoElement.play();
 }
 
@@ -340,6 +434,26 @@ function initGame() {
     videoElement.addEventListener('timeupdate', checkVideoProgress);
     videoElement.addEventListener('ended', handleVideoEnd);
     imageContinueButton.addEventListener('click', hideImage);
+    
+    // 添加音频控制事件监听
+    audioToggleButton.addEventListener('click', toggleAudio);
+    audioVolumeSlider.addEventListener('input', adjustVolume);
+}
+
+// 切换音频播放/暂停
+function toggleAudio() {
+    if (audioElement.paused) {
+        audioElement.play();
+        audioToggleButton.textContent = '暂停音频';
+    } else {
+        audioElement.pause();
+        audioToggleButton.textContent = '播放音频';
+    }
+}
+
+// 调整音频音量
+function adjustVolume() {
+    audioElement.volume = audioVolumeSlider.value;
 }
 
 // 当页面加载完成后初始化游戏

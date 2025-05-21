@@ -227,6 +227,60 @@ body {
     to { opacity: 1; transform: translateY(0); }
 }
 
+/* 音频控制 */
+.story-audio {
+    width: 100%;
+    margin: 10px 0;
+    display: none;
+}
+
+.audio-controls {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+    margin: 10px 0;
+}
+
+.audio-button {
+    padding: 8px 15px;
+    background-color: #2c2c2c;
+    color: #64ffda;
+    border: 1px solid #64ffda;
+    border-radius: 5px;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.audio-button:hover {
+    background-color: #64ffda;
+    color: #121212;
+}
+
+.audio-volume {
+    width: 100px;
+    height: 5px;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #2c2c2c;
+    outline: none;
+    border-radius: 5px;
+    overflow: hidden;
+}
+
+.audio-volume::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #64ffda;
+    cursor: pointer;
+    border: 2px solid #121212;
+    box-shadow: -100px 0 0 100px #64ffda;
+}
+
 /* 工具类 */
 .hidden {
     display: none !important;
