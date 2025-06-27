@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>视觉小说游戏</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div id="game-container">
+        <!-- 故事介绍视频界面 -->
+        <div id="intro-video-screen" style="display: none;">
+            <video id="intro-video" muted autoplay>
+                <source src="videos/story_intro.mp4" type="video/mp4">
+                您的浏览器不支持视频播放。
+            </video>
+            <div id="intro-video-controls">
+                <button id="skip-intro-btn">跳过</button>
+                <button id="continue-after-intro-btn" style="display: none;">继续</button>
+            </div>
+        </div>
+        
+        <!-- 背景 -->
+        <div id="background"></div>
+        
+        <!-- 视频背景 -->
+        <video id="background-video" style="display: none;" loop></video>
+        
+        <!-- 角色立绘 -->
+        <div id="character-container">
+            <img id="character" src="" alt="角色" style="display: none;">
+        </div>
+        
+        <!-- 多角色支持 -->
+        <div id="characters-container">
+            <div id="left-character" class="character-position">
+                <img class="character-image" src="" alt="左侧角色" style="display: none;">
+            </div>
+            <div id="center-character" class="character-position">
+                <img class="character-image" src="" alt="中间角色" style="display: none;">
+            </div>
+            <div id="right-character" class="character-position">
+                <img class="character-image" src="" alt="右侧角色" style="display: none;">
+            </div>
+        </div>
+        
+        <!-- 对话框 -->
+        <div id="dialogue-box">
+            <div id="speaker-name"></div>
+            <div id="dialogue-text"></div>
+            <div id="continue-indicator">▼</div>
+        </div>
+        
+        <!-- 选择按钮 -->
+        <div id="choices-container" style="display: none;">
+        </div>
+        
+        <!-- 游戏菜单 -->
+        <div id="game-menu">
+            <button id="save-btn">保存</button>
+            <button id="load-btn">读取</button>
+            <button id="settings-btn">设置</button>
+            <button id="auto-btn">自动</button>
+        </div>
+        
+        <!-- 设置面板 -->
+        <div id="settings-panel" style="display: none;">
+            <h3>游戏设置</h3>
+            <div class="setting-item">
+                <label>文字速度:</label>
+                <input type="range" id="text-speed" min="1" max="10" value="5">
+            </div>
+            <div class="setting-item">
+                <label for="volume">音量: 50%</label>
+                <input type="range" id="volume" min="0" max="100" value="50">
+            </div>
+            <button id="close-settings">关闭</button>
+        </div>
+        
+        <!-- 开始界面 -->
+        <div id="start-screen">
+            <h1>梦境之旅</h1>
+            <div id="start-menu">
+                <button id="new-game-btn">新游戏</button>
+                <button id="continue-game-btn">继续游戏</button>
+                <button id="about-btn">关于</button>
+            </div>
+        </div>
+    </div>
+    
+    <script src="game.js"></script>
+</body>
+</html>
